@@ -34,24 +34,32 @@
     </style>
 </head>
 <body class="body">
-    <button class="button">Touch me</button>
+    <button class="button" data-clicks="0">Touch me</button>
 
     <script>
         const button = document.getElementsByClassName("button")[0];
 
-        let intervalID = undefined;
-
-        function intervalHandler() {
-            button.disabled = true;
-        }
+        let lastTime = undefined;
 
         button.onclick = function() {
 
-            if (typeof intervalID !== "undefined") {
-                clearTimeout(intervalID);
+            const clicks = ++button.dataset.clicks;
+            button.textContent = clicks;
+
+            const currentTime = Date.now();
+
+            if (lastTime) {
+
+                const interval = currentTime - lastTime;
+                
+                console.log(interval);
+
+                if (interval < 1000) {
+                    button.disabled = true;
+                }
             }
 
-            intervalID = setTimeout(intervalHandler, 1000);
+            lastTime = currentTime;            
         }
     </script>
 </body>
